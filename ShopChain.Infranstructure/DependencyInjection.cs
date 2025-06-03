@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ShopChain.Core.Interfaces;
 using ShopChain.Infranstructure.Data;
 using ShopChain.Infranstructure.Repositories;
+using ShopChain.Infranstructure.Services;
 
 namespace ShopChain.Infranstructure
 {
@@ -15,7 +16,16 @@ namespace ShopChain.Infranstructure
                 options.UseSqlServer("Data Source=.;Initial Catalog=ShopChain;Integrated Security=True;Trust Server Certificate=True");
             });
 
-            services.AddScoped<IStoreRepository, StoreRepository>();
+            services.AddScoped<IStoreRepository, FormatProvider>();
+
+            services.AddScoped<IExternalVendorRepository, ExternalVendorRepository>();
+
+            services.AddScoped<IProvinceRepository, ProvinceRepository>();
+
+            services.AddHttpClient<ProvinceHttpClientService>(client =>
+            {
+                client.BaseAddress = new Uri("https://provinces.open-api.vn/api/");
+            });
             return services;
         }
     }

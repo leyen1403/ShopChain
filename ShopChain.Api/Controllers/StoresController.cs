@@ -45,5 +45,18 @@ namespace ShopChain.Api.Controllers
             var result = await sender.Send(new DeleteStoreCommand(id));
             return result ? NoContent() : NotFound();
         }
+
+        [HttpGet("City")]
+        public async Task<IActionResult> GetCity()
+        {
+            return Ok(await sender.Send(new GetAllProvince()));
+        }
+        [HttpGet("CreateNewProvinceCommand")]
+        public async Task<IActionResult> CreateNewProvinceCommand()
+        {
+            var model = await sender.Send(new GetAllProvince());
+            var entity = await sender.Send(new CreateNewProvinceCommand(model));
+            return Ok();
+        }
     }
 }

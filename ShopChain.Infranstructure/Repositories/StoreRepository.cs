@@ -5,7 +5,7 @@ using ShopChain.Infranstructure.Data;
 
 namespace ShopChain.Infranstructure.Repositories
 {
-    public class StoreRepository(AppDbContext context) : IStoreRepository
+    public class FormatProvider(AppDbContext context) : IStoreRepository
     {
         public async Task<List<Store>> GetAllStoresAsync()
         {
