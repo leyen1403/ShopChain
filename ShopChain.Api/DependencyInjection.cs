@@ -13,6 +13,11 @@ namespace ShopChain.Api
                 .AddInfranstructureDI()
                 .AddCoreDI();
 
+            //services.AddControllers().AddJsonOptions(options =>
+            //{
+            //    //options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+            //});
+
             return services;
         }
 }

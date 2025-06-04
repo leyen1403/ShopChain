@@ -16,7 +16,7 @@ namespace ShopChain.Infranstructure
                 options.UseSqlServer("Data Source=.;Initial Catalog=ShopChain;Integrated Security=True;Trust Server Certificate=True");
             });
 
-            services.AddScoped<IStoreRepository, FormatProvider>();
+            services.AddScoped<IStoreRepository, StoreRepository>();
 
             services.AddScoped<IExternalVendorRepository, ExternalVendorRepository>();
 

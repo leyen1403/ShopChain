@@ -1,4 +1,5 @@
-﻿using ShopChain.Core.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopChain.Core.Interfaces;
 using ShopChain.Infranstructure.Data;
 
 namespace ShopChain.Infranstructure.Repositories
@@ -44,5 +45,13 @@ namespace ShopChain.Infranstructure.Repositories
 
             return entityList;
         }
-    }
+
+        public async Task<List<ShopChain.Core.Entities.Province>> GetAllProvinces()
+        {
+            return await context.Provinces
+                .Include(p => p.Districts)
+                    .ThenInclude(d => d.Wards)
+                .ToListAsync();
+        }
+    } 
 }

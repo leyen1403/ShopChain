@@ -5,16 +5,22 @@ using ShopChain.Infranstructure.Data;
 
 namespace ShopChain.Infranstructure.Repositories
 {
-    public class FormatProvider(AppDbContext context) : IStoreRepository
+    public class StoreRepository(AppDbContext context) : IStoreRepository
     {
+        // Lấy danh sách chưa bị xoá
         public async Task<List<Store>> GetAllStoresAsync()
         {
-            return await context.Stores.ToListAsync();
+            return await context.Stores
+                .Where(s => !s.IsDeleted)
+                .ToListAsync();
         }
 
+        // Lấy chi tiết store chưa bị xoá
         public async Task<Store?> GetStoreByIdAsync(int id)
         {
-            return await context.Stores.FindAsync(id);
+            return await context.Stores
+                .Where(s => s.StoreID == id && !s.IsDeleted)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Store?> AddStoreAsync(Store store)
@@ -31,16 +37,19 @@ namespace ShopChain.Infranstructure.Repositories
             return store;
         }
 
+        // Soft Delete
         public async Task<bool> DeleteStoreAsync(int id)
         {
             var store = await context.Stores.FindAsync(id);
-            if (store == null)
+            if (store == null || store.IsDeleted)
             {
                 return false;
             }
-            context.Stores.Remove(store);
+            store.IsDeleted = true;
+            store.UpdatedAt = DateTime.UtcNow;
             await context.SaveChangesAsync();
             return true;
         }
     }
+
 }

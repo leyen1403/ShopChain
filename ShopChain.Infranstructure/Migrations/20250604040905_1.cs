@@ -5,7 +5,7 @@
 namespace ShopChain.Infranstructure.Migrations
 {
     /// <inheritdoc />
-    public partial class createLocation : Migration
+    public partial class _1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,9 +16,9 @@ namespace ShopChain.Infranstructure.Migrations
                 {
                     Code = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CodeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DivisionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CodeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DivisionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneCode = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -27,15 +27,29 @@ namespace ShopChain.Infranstructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Stores",
+                columns: table => new
+                {
+                    StoreID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stores", x => x.StoreID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Districts",
                 columns: table => new
                 {
                     Code = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CodeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DivisionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShortCodeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CodeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DivisionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShortCodeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProvinceCode = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -55,10 +69,10 @@ namespace ShopChain.Infranstructure.Migrations
                 {
                     Code = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CodeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DivisionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShortCodeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CodeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DivisionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShortCodeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DistrictCode = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -86,6 +100,9 @@ namespace ShopChain.Infranstructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Stores");
+
             migrationBuilder.DropTable(
                 name: "Wards");
 

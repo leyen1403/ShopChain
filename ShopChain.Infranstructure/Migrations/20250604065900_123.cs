@@ -5,7 +5,7 @@
 namespace ShopChain.Infranstructure.Migrations
 {
     /// <inheritdoc />
-    public partial class deleteIdentityColumn : Migration
+    public partial class _123 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
