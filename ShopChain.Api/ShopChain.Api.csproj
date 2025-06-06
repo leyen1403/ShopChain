@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopChain.Application\ShopChain.Application.csproj" />
-    <ProjectReference Include="..\ShopChain.Infranstructure\ShopChain.Infranstructure.csproj" />
+    <ProjectReference Include="..\ShopChain.Infrastructure\ShopChain.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

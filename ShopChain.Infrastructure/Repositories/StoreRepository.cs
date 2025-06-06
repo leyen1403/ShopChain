@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopChain.Core.Entities;
 using ShopChain.Core.Interfaces;
-using ShopChain.Infranstructure.Data;
+using ShopChain.Infrastructure.Data;
 
-namespace ShopChain.Infranstructure.Repositories
+namespace ShopChain.Infrastructure.Repositories
 {
     public class StoreRepository(AppDbContext context) : IStoreRepository
     {

@@ -1,7 +1,7 @@
 ﻿using ShopChain.Core.Models;
 using System.Net.Http.Json;
 
-namespace ShopChain.Infranstructure.Services
+namespace ShopChain.Infrastructure.Services
 {
     public class ProvinceHttpClientService(HttpClient httpClient) : IProvinceHttpClientService
     {

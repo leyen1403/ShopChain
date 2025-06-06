@@ -1,8 +1,8 @@
 ﻿using ShopChain.Core.Interfaces;
 using ShopChain.Core.Models;
-using ShopChain.Infranstructure.Services;
+using ShopChain.Infrastructure.Services;
 
-namespace ShopChain.Infranstructure.Repositories
+namespace ShopChain.Infrastructure.Repositories
 {
     public class ExternalVendorRepository(ProvinceHttpClientService provinceHttpClientService) : IExternalVendorRepository
     {

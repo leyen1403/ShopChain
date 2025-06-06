@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopChain.Application", "Sh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopChain.Core", "ShopChain.Core\ShopChain.Core.csproj", "{A0C5F7A4-1E43-42A3-9A5B-1A1F6A7EB5F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopChain.Infranstructure", "ShopChain.Infranstructure\ShopChain.Infranstructure.csproj", "{A847F556-34CD-4DAA-AD87-2B1CEE327D09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopChain.Infrastructure", "ShopChain.Infrastructure\ShopChain.Infrastructure.csproj", "{A847F556-34CD-4DAA-AD87-2B1CEE327D09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

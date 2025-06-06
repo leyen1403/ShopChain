@@ -1,6 +1,6 @@
 ﻿using ShopChain.Application;
 using ShopChain.Core;
-using ShopChain.Infranstructure;
+using ShopChain.Infrastructure;
 
 namespace ShopChain.Api
 {
@@ -10,7 +10,7 @@ namespace ShopChain.Api
         {
             services
                 .AddApplicationDI()
-                .AddInfranstructureDI()
+                .AddInfrastructureDI()
                 .AddCoreDI();
 
             //services.AddControllers().AddJsonOptions(options =>

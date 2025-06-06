@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShopChain.Infranstructure.Data;
+using ShopChain.Infrastructure.Data;
 
 #nullable disable
 
-namespace ShopChain.Infranstructure.Migrations
+namespace ShopChain.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250604065802_12")]

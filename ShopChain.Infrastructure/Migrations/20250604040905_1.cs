@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace ShopChain.Infranstructure.Migrations
+namespace ShopChain.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class _1 : Migration
