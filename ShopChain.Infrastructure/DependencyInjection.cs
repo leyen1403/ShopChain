@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ShopChain.Core.Interfaces;
-using ShopChain.Infranstructure.Data;
-using ShopChain.Infranstructure.Repositories;
-using ShopChain.Infranstructure.Services;
+using ShopChain.Infrastructure.Data;
+using ShopChain.Infrastructure.Repositories;
+using ShopChain.Infrastructure.Services;
 
-namespace ShopChain.Infranstructure
+namespace ShopChain.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfranstructureDI(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureDI(this IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
             {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ShopChain.Infranstructure.Data
+namespace ShopChain.Infrastructure.Data
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options): DbContext(options)
     {
