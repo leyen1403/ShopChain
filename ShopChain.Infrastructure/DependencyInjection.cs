@@ -18,6 +18,7 @@ namespace ShopChain.Infrastructure
             });
 
             services.AddScoped<IStoreRepository, StoreRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             services.AddScoped<IExternalVendorRepository, ExternalVendorRepository>();
 
