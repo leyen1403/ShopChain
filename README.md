@@ -23,3 +23,8 @@ dotnet run --project ShopChain.Api
 
 The API will listen on the default ASP.NET Core URLs and Swagger will be available in development mode.
 
+## Documentation in Vietnamese
+
+For a beginner-friendly guide in Vietnamese, see [docs/HuongDanNguoiMoi.md](docs/HuongDanNguoiMoi.md).
+For a detailed overview of the project structure in Vietnamese, see [docs/CauTrucDuAn.md](docs/CauTrucDuAn.md).
+
