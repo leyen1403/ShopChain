@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopChain.Core.Interfaces;
-using ShopChain.Infranstructure.Data;
+using ShopChain.Infrastructure.Data;
 
-namespace ShopChain.Infranstructure.Repositories
+namespace ShopChain.Infrastructure.Repositories
 {
     public class ProvinceRepository(AppDbContext context) : IProvinceRepository
     {

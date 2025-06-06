@@ -1,6 +1,6 @@
 ﻿using ShopChain.Application;
 using ShopChain.Core;
-using ShopChain.Infranstructure;
+using ShopChain.Infrastructure;
 
 namespace ShopChain.Api
 {

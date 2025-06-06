@@ -1,6 +1,6 @@
 ﻿using ShopChain.Core.Models;
 
-namespace ShopChain.Infranstructure.Services
+namespace ShopChain.Infrastructure.Services
 {
     public interface IProvinceHttpClientService
     {
