@@ -1,16 +1,41 @@
-﻿using MediatR;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using MediatR;
+using ShopChain.Application.Dtos;
 using ShopChain.Core.Entities;
 using ShopChain.Core.Interfaces;
 
 namespace ShopChain.Application.Commands
 {
-    public record AddStoreCommand(Store Store) : IRequest<Store?>;
+    /// <summary>
+    /// Command để thêm mới cửa hàng từ StoreDto
+    /// </summary>
+    public record AddStoreCommand(StoreDto StoreDto) : IRequest<StoreDto?>;
 
-    public class AddStoreCommandHandler(IStoreRepository storeRepository) : IRequestHandler<AddStoreCommand, Store?>
+    /// <summary>
+    /// Handler xử lý việc thêm cửa hàng mới
+    /// </summary>
+    public class AddStoreCommandHandler : IRequestHandler<AddStoreCommand, StoreDto?>
     {
-        public async Task<Store?> Handle(AddStoreCommand request, CancellationToken cancellationToken)
+        private readonly IStoreRepository _storeRepository;
+        private readonly IMapper _mapper;
+
+        public AddStoreCommandHandler(IStoreRepository storeRepository, IMapper mapper)
         {
-            return await storeRepository.AddStoreAsync(request.Store);
+            _storeRepository = storeRepository ?? throw new ArgumentNullException(nameof(storeRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+        public async Task<StoreDto?> Handle(AddStoreCommand request, CancellationToken cancellationToken)
+        {
+            if (request.StoreDto == null)
+                return null;
+
+            var entity = _mapper.Map<Store>(request.StoreDto);
+            var result = await _storeRepository.AddStoreAsync(entity);
+
+            return result is null ? null : _mapper.Map<StoreDto>(result);
         }
     }
 }

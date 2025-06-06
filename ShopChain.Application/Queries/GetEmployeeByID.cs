@@ -1,16 +1,31 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
 using ShopChain.Core.Entities;
 using ShopChain.Core.Interfaces;
 
 namespace ShopChain.Application.Queries
 {
-    public record GetEmployeeByID(int Id) : IRequest<Employee?>;
+    /// <summary>
+    /// Query để lấy thông tin nhân viên theo ID
+    /// </summary>
+    public record GetEmployeeByIdQuery(int Id) : IRequest<Employee?>;
 
-    public class GetEmployeeByIDHandler(IEmployeeRepository employeeRepository) : IRequestHandler<GetEmployeeByID, Employee?>
+    /// <summary>
+    /// Handler xử lý GetEmployeeByIdQuery
+    /// </summary>
+    public class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery, Employee?>
     {
-        public async Task<Employee?> Handle(GetEmployeeByID request, CancellationToken cancellationToken)
+        private readonly IEmployeeRepository _employeeRepository;
+
+        public GetEmployeeByIdQueryHandler(IEmployeeRepository employeeRepository)
         {
-            return await employeeRepository.GetEmployeeByIdAsync(request.Id);
+            _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
+        }
+
+        public async Task<Employee?> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
+        {
+            return await _employeeRepository.GetEmployeeByIdAsync(request.Id);
         }
     }
 }

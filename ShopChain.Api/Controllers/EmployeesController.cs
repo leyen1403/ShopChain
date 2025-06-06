@@ -20,7 +20,7 @@ namespace ShopChain.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployeeById(int id)
         {
-            var result = await sender.Send(new GetEmployeeByID(id));
+            var result = await sender.Send(new GetEmployeeByIdQuery(id));
             return result is not null ? Ok(result) : NotFound();
         }
 

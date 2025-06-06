@@ -8,26 +8,32 @@ using ShopChain.Infrastructure.Services;
 
 namespace ShopChain.Infrastructure
 {
+    /// <summary>
+    /// Đăng ký các dependency cho tầng Infrastructure
+    /// </summary>
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructureDI(this IServiceCollection services, IConfiguration configuration)
         {
+            // Đăng ký DbContext với chuỗi kết nối từ cấu hình
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
+            // Đăng ký Repository
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
             services.AddScoped<IExternalVendorRepository, ExternalVendorRepository>();
-
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
 
-            services.AddHttpClient<ProvinceHttpClientService>(client =>
+            // Đăng ký HttpClient cho gọi API tỉnh thành
+            services.AddHttpClient<IProvinceHttpClientService, ProvinceHttpClientService>(client =>
             {
-                client.BaseAddress = new Uri("https://provinces.open-api.vn/api/");
+                var baseUrl = configuration["ExternalApis:ProvinceBaseUrl"];
+                client.BaseAddress = new Uri(baseUrl ?? "https://provinces.open-api.vn/api/");
             });
+
             return services;
         }
     }

@@ -1,61 +1,104 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopChain.Application.Commands;
+using ShopChain.Application.Dtos;
 using ShopChain.Application.Queries;
 using ShopChain.Core.Entities;
+using System.Threading.Tasks;
 
 namespace ShopChain.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StoresController(ISender sender) : ControllerBase
+    public class StoresController : ControllerBase
     {
+        private readonly ISender _sender;
+
+        public StoresController(ISender sender)
+        {
+            _sender = sender ?? throw new ArgumentNullException(nameof(sender));
+        }
+
+        /// <summary>
+        /// Lấy toàn bộ cửa hàng
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAllStores()
         {
-            var result = await sender.Send(new GetAllStore());
+            var result = await _sender.Send(new GetAllStoresQuery());
             return Ok(result);
         }
 
+        /// <summary>
+        /// Lấy cửa hàng theo ID
+        /// </summary>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStoreById(int id)
         {
-            var result = await sender.Send(new GetStoreByID(id));
+            var result = await _sender.Send(new GetStoreByIdQuery(id));
             return result is not null ? Ok(result) : NotFound();
         }
 
+        /// <summary>
+        /// Thêm mới cửa hàng
+        /// </summary>
         [HttpPost]
-        public async Task<IActionResult> CreateStore([FromBody] Store store)
+        public async Task<IActionResult> CreateStore([FromBody] StoreDto storeDto)
         {
-            var result = await sender.Send(new AddStoreCommand(store));
+            if (storeDto == null) return BadRequest("Thông tin cửa hàng không được để trống");
+
+            var result = await _sender.Send(new AddStoreCommand(storeDto));
+
+            if (result == null)
+                return StatusCode(500, "Không thể thêm cửa hàng");
+
             return CreatedAtAction(nameof(GetStoreById), new { id = result.StoreID }, result);
         }
 
+        /// <summary>
+        /// Cập nhật thông tin cửa hàng
+        /// </summary>
         [HttpPut]
-        public async Task<IActionResult> UpdateStore([FromBody] Store store)
+        public async Task<IActionResult> UpdateStore([FromBody] StoreDto storeDto)
         {
-            var result = await sender.Send(new UpdateStoreCommand(store));
+            if (storeDto is null)
+            {
+                return BadRequest("Thông tin cửa hàng không hợp lệ.");
+            }
+
+            var result = await _sender.Send(new UpdateStoreCommand(storeDto));
+
             return result is not null ? Ok(result) : NotFound();
         }
 
+        /// <summary>
+        /// Xóa cửa hàng theo ID
+        /// </summary>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStore(int id)
-        {            
-            var result = await sender.Send(new DeleteStoreCommand(id));
+        {
+            var result = await _sender.Send(new DeleteStoreCommand(id));
             return result ? NoContent() : NotFound();
         }
 
-        [HttpGet("City")]
-        public async Task<IActionResult> GetCity()
+        /// <summary>
+        /// Lấy danh sách tỉnh/thành
+        /// </summary>
+        [HttpGet("provinces")]
+        public async Task<IActionResult> GetProvinces()
         {
-            return Ok(await sender.Send(new GetAllProvince()));
+            var result = await _sender.Send(new GetAllProvince());
+            return Ok(result);
         }
-        [HttpGet("CreateNewProvinceCommand")]
-        public async Task<IActionResult> CreateNewProvinceCommand()
+
+        /// <summary>
+        /// Tạo mới danh sách tỉnh dựa trên dữ liệu hiện tại
+        /// </summary>
+        [HttpPost("provinces")]
+        public async Task<IActionResult> CreateProvincesFromData()
         {
-            var model = await sender.Send(new GetAllProvince());
-            var entity = await sender.Send(new CreateNewProvinceCommand(model));
+            var provinces = await _sender.Send(new GetAllProvince());
+            _ = await _sender.Send(new CreateNewProvinceCommand(provinces));
             return Ok();
         }
     }

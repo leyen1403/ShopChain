@@ -5,51 +5,85 @@ using ShopChain.Infrastructure.Data;
 
 namespace ShopChain.Infrastructure.Repositories
 {
-    public class StoreRepository(AppDbContext context) : IStoreRepository
+    /// <summary>
+    /// Repository thao tác với bảng cửa hàng (Store)
+    /// </summary>
+    public class StoreRepository : IStoreRepository
     {
-        // Lấy danh sách chưa bị xoá
+        private readonly AppDbContext _context;
+
+        public StoreRepository(AppDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        /// <summary>
+        /// Lấy danh sách cửa hàng chưa bị xóa
+        /// </summary>
         public async Task<List<Store>> GetAllStoresAsync()
         {
-            return await context.Stores
+            return await _context.Stores
                 .Where(s => !s.IsDeleted)
                 .ToListAsync();
         }
 
-        // Lấy chi tiết store chưa bị xoá
+        /// <summary>
+        /// Lấy thông tin cửa hàng theo ID (chưa bị xóa)
+        /// </summary>
         public async Task<Store?> GetStoreByIdAsync(int id)
         {
-            return await context.Stores
+            return await _context.Stores
                 .Where(s => s.StoreID == id && !s.IsDeleted)
                 .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Thêm mới cửa hàng
+        /// </summary>
         public async Task<Store?> AddStoreAsync(Store store)
         {
-            await context.Stores.AddAsync(store);
-            await context.SaveChangesAsync();
+            if (store == null)
+            {
+                return null;
+            }
+
+            await _context.Stores.AddAsync(store);
+            await _context.SaveChangesAsync();
             return store;
         }
 
+        /// <summary>
+        /// Cập nhật thông tin cửa hàng
+        /// </summary>
         public async Task<Store?> UpdateStoreAsync(Store store)
         {
-            context.Stores.Update(store);
-            await context.SaveChangesAsync();
+            if (store == null)
+            {
+                return null;
+            }
+
+            _context.Stores.Update(store);
+            await _context.SaveChangesAsync();
             return store;
         }
 
-        // Soft Delete
+        /// <summary>
+        /// Xóa mềm cửa hàng theo ID
+        /// </summary>
         public async Task<bool> DeleteStoreAsync(int id)
         {
-            var store = await context.Stores.FindAsync(id);
+            var store = await _context.Stores.FindAsync(id);
+
             if (store == null || store.IsDeleted)
             {
                 return false;
             }
+
             store.IsDeleted = true;
             store.UpdatedAt = DateTime.UtcNow;
-            await context.SaveChangesAsync();
+
+            await _context.SaveChangesAsync();
             return true;
         }
     }
-
 }

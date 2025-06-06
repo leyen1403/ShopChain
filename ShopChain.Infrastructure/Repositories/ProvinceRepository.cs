@@ -1,35 +1,57 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopChain.Core.Entities;
 using ShopChain.Core.Interfaces;
 using ShopChain.Infrastructure.Data;
 
 namespace ShopChain.Infrastructure.Repositories
 {
-    public class ProvinceRepository(AppDbContext context) : IProvinceRepository
+    /// <summary>
+    /// Repository thao tác với dữ liệu tỉnh/thành
+    /// </summary>
+    public class ProvinceRepository : IProvinceRepository
     {
-        public async Task<List<ShopChain.Core.Entities.Province>> CreateNewProvince(List<ShopChain.Core.Models.Province> provinces)
+        private readonly AppDbContext _context;
+
+        public ProvinceRepository(AppDbContext context)
         {
-            if (provinces == null || !provinces.Any())
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        /// <summary>
+        /// Xóa toàn bộ dữ liệu tỉnh/thành hiện tại và thay bằng dữ liệu mới từ API
+        /// </summary>
+        /// <param name="provinces">Danh sách tỉnh từ API</param>
+        /// <returns>Danh sách entity đã lưu</returns>
+        public async Task<List<Province>> CreateNewProvince(List<Core.Models.Province> provinces)
+        {
+            if (provinces == null || provinces.Count == 0)
             {
-                throw new ArgumentException("Provinces list cannot be null or empty.", nameof(provinces));
+                throw new ArgumentException("Danh sách tỉnh không được rỗng.", nameof(provinces));
             }
-            context.Wards.RemoveRange(context.Wards);
-            context.Districts.RemoveRange(context.Districts);
-            context.Provinces.RemoveRange(context.Provinces);
-            var entityList = provinces.Select(model => new ShopChain.Core.Entities.Province
+
+            // Xóa toàn bộ dữ liệu cũ để đồng bộ dữ liệu mới
+            _context.Wards.RemoveRange(_context.Wards);
+            _context.Districts.RemoveRange(_context.Districts);
+            _context.Provinces.RemoveRange(_context.Provinces);
+
+            var entityList = provinces.Select(p => new Province
             {
-                Name = model.Name,
-                CodeName = model.CodeName,
-                DivisionType = model.DivisionType,
-                PhoneCode = model.PhoneCode,
-                Districts = model.Districts.Select(d => new ShopChain.Core.Entities.District
+                Code = p.Code,
+                Name = p.Name,
+                CodeName = p.CodeName,
+                DivisionType = p.DivisionType,
+                PhoneCode = p.PhoneCode,
+                Districts = p.Districts.Select(d => new District
                 {
+                    Code = d.Code,
                     Name = d.Name,
                     CodeName = d.CodeName,
                     DivisionType = d.DivisionType,
                     ShortCodeName = d.ShortCodeName,
-                    ProvinceCode = model.Code,
-                    Wards = d.Wards.Select(w => new ShopChain.Core.Entities.Ward
+                    ProvinceCode = p.Code,
+                    Wards = d.Wards.Select(w => new Ward
                     {
+                        Code = w.Code,
                         Name = w.Name,
                         CodeName = w.CodeName,
                         DivisionType = w.DivisionType,
@@ -39,19 +61,21 @@ namespace ShopChain.Infrastructure.Repositories
                 }).ToList()
             }).ToList();
 
-            context.Provinces.AddRange(entityList);
-
-            await context.SaveChangesAsync();
+            await _context.Provinces.AddRangeAsync(entityList);
+            await _context.SaveChangesAsync();
 
             return entityList;
         }
 
-        public async Task<List<ShopChain.Core.Entities.Province>> GetAllProvinces()
+        /// <summary>
+        /// Lấy toàn bộ tỉnh cùng các quận, phường tương ứng
+        /// </summary>
+        public async Task<List<Province>> GetAllProvinces()
         {
-            return await context.Provinces
+            return await _context.Provinces
                 .Include(p => p.Districts)
                     .ThenInclude(d => d.Wards)
                 .ToListAsync();
         }
-    } 
+    }
 }

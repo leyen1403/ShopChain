@@ -1,18 +1,18 @@
-using ShopChain.Api;
+﻿using ShopChain.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Đăng ký các service DI theo tầng
+builder.Services.AddAppDI(builder.Configuration);
 
+// Đăng ký controller + Swagger
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAppDI(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware pipeline
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();

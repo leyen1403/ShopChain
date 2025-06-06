@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MediatR;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace ShopChain.Application
 {
@@ -9,6 +10,8 @@ namespace ShopChain.Application
         {
             services.AddMediatR(typeof(DependencyInjection).Assembly);
 
+            // Đăng ký AutoMapper
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             return services;
         }
     }

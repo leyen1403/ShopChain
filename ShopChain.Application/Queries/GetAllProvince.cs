@@ -1,21 +1,32 @@
-﻿using MediatR;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
 using ShopChain.Core.Interfaces;
 using ShopChain.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShopChain.Application.Queries
 {
-    public record GetAllProvince():IRequest<List<Province>>;
+    /// <summary>
+    /// Query gọi API bên ngoài để lấy danh sách tỉnh/thành
+    /// </summary>
+    public record GetAllProvince() : IRequest<List<Province>>;
 
-    public class GetAllProvinceHandler(IExternalVendorRepository externalVendorRepository) : IRequestHandler<GetAllProvince, List<Province>>
+    /// <summary>
+    /// Handler xử lý GetAllProvince
+    /// </summary>
+    public class GetAllProvinceHandler : IRequestHandler<GetAllProvince, List<Province>>
     {
+        private readonly IExternalVendorRepository _externalVendorRepository;
+
+        public GetAllProvinceHandler(IExternalVendorRepository externalVendorRepository)
+        {
+            _externalVendorRepository = externalVendorRepository ?? throw new ArgumentNullException(nameof(externalVendorRepository));
+        }
+
         public async Task<List<Province>> Handle(GetAllProvince request, CancellationToken cancellationToken)
         {
-            return await externalVendorRepository.GetProvincesAsync();
+            return await _externalVendorRepository.GetProvincesAsync();
         }
     }
 }
