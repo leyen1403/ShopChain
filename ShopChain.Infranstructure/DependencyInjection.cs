@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShopChain.Core.Interfaces;
 using ShopChain.Infranstructure.Data;
@@ -9,11 +10,11 @@ namespace ShopChain.Infranstructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfranstructureDI(this IServiceCollection services)
+        public static IServiceCollection AddInfranstructureDI(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer("Data Source=.;Initial Catalog=ShopChain;Integrated Security=True;Trust Server Certificate=True");
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddScoped<IStoreRepository, StoreRepository>();

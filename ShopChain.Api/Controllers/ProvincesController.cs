@@ -14,7 +14,7 @@ namespace ShopChain.Api.Controllers
         {
             var model = await sender.Send(new GetAllProvince());
             var entity = await sender.Send(new CreateNewProvinceCommand(model));
-            return Ok();
+            return Ok(entity);
         }
 
         [HttpPost("GetNewData")]

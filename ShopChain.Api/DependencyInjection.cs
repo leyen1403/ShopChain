@@ -6,11 +6,11 @@ namespace ShopChain.Api
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddAppDI(this IServiceCollection services)
+        public static IServiceCollection AddAppDI(this IServiceCollection services, IConfiguration configuration)
         {
             services
                 .AddApplicationDI()
-                .AddInfranstructureDI()
+                .AddInfranstructureDI(configuration)
                 .AddCoreDI();
 
             //services.AddControllers().AddJsonOptions(options =>
