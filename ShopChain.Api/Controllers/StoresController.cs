@@ -4,13 +4,11 @@ using ShopChain.Application.Commands;
 using ShopChain.Application.Dtos;
 using ShopChain.Application.Queries;
 using ShopChain.Core.Entities;
-using System.Threading.Tasks;
 
 namespace ShopChain.Api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class StoresController : ControllerBase
+    public class StoresController : BaseApiController
     {
         private readonly ISender _sender;
 
@@ -20,7 +18,7 @@ namespace ShopChain.Api.Controllers
         }
 
         /// <summary>
-        /// Lấy toàn bộ cửa hàng
+        /// Lấy danh sách tất cả cửa hàng
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAllStores()
@@ -30,59 +28,63 @@ namespace ShopChain.Api.Controllers
         }
 
         /// <summary>
-        /// Lấy cửa hàng theo ID
+        /// Lấy thông tin cửa hàng theo ID
         /// </summary>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStoreById(int id)
         {
             var result = await _sender.Send(new GetStoreByIdQuery(id));
-            return result is not null ? Ok(result) : NotFound();
+            return result is not null
+                ? Ok(result)
+                : ErrorResponse(404, "Không tìm thấy", $"Không có cửa hàng với ID = {id}");
         }
 
         /// <summary>
-        /// Thêm mới cửa hàng
+        /// Tạo mới cửa hàng
         /// </summary>
         [HttpPost]
         public async Task<IActionResult> CreateStore([FromBody] StoreDto storeDto)
         {
-            if (storeDto == null) return BadRequest("Thông tin cửa hàng không được để trống");
+            if (storeDto is null)
+                return ErrorResponse(400, "Dữ liệu không hợp lệ", "Thông tin cửa hàng không được để trống.");
 
             var result = await _sender.Send(new AddStoreCommand(storeDto));
 
-            if (result == null)
-                return StatusCode(500, "Không thể thêm cửa hàng");
-
-            return CreatedAtAction(nameof(GetStoreById), new { id = result.StoreID }, result);
+            return result is not null
+                ? CreatedAtAction(nameof(GetStoreById), new { id = result.StoreID }, result)
+                : ErrorResponse(500, "Lỗi hệ thống", "Không thể thêm cửa hàng vào hệ thống.");
         }
 
         /// <summary>
-        /// Cập nhật thông tin cửa hàng
+        /// Cập nhật cửa hàng
         /// </summary>
         [HttpPut]
         public async Task<IActionResult> UpdateStore([FromBody] StoreDto storeDto)
         {
             if (storeDto is null)
-            {
-                return BadRequest("Thông tin cửa hàng không hợp lệ.");
-            }
+                return ErrorResponse(400, "Dữ liệu không hợp lệ", "Thông tin cửa hàng không hợp lệ.");
 
             var result = await _sender.Send(new UpdateStoreCommand(storeDto));
 
-            return result is not null ? Ok(result) : NotFound();
+            return result is not null
+                ? Ok(result)
+                : ErrorResponse(404, "Không tìm thấy", $"Không có cửa hàng với ID = {storeDto.StoreID}");
         }
 
         /// <summary>
-        /// Xóa cửa hàng theo ID
+        /// Xóa mềm cửa hàng theo ID
         /// </summary>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStore(int id)
         {
             var result = await _sender.Send(new DeleteStoreCommand(id));
-            return result ? NoContent() : NotFound();
+            return result
+                ? NoContent()
+                : ErrorResponse(404, "Không tìm thấy", $"Không thể xóa cửa hàng với ID = {id}");
         }
 
         /// <summary>
-        /// Lấy danh sách tỉnh/thành
+        /// Lấy danh sách tỉnh/thành từ API ngoài
         /// </summary>
         [HttpGet("provinces")]
         public async Task<IActionResult> GetProvinces()
@@ -92,14 +94,14 @@ namespace ShopChain.Api.Controllers
         }
 
         /// <summary>
-        /// Tạo mới danh sách tỉnh dựa trên dữ liệu hiện tại
+        /// Đồng bộ và lưu danh sách tỉnh/thành vào hệ thống
         /// </summary>
         [HttpPost("provinces")]
         public async Task<IActionResult> CreateProvincesFromData()
         {
             var provinces = await _sender.Send(new GetAllProvince());
-            _ = await _sender.Send(new CreateNewProvinceCommand(provinces));
-            return Ok();
+            await _sender.Send(new CreateNewProvinceCommand(provinces));
+            return Ok(new { message = "Cập nhật danh sách tỉnh/thành thành công." });
         }
     }
 }
