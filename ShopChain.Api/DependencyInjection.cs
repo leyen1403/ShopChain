@@ -10,7 +10,7 @@ namespace ShopChain.Api
         {
             services
                 .AddApplicationDI()
-                .AddInfranstructureDI(configuration)
+                .AddInfrastructureDI(configuration)
                 .AddCoreDI();
 
             //services.AddControllers().AddJsonOptions(options =>
