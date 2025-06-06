@@ -29,10 +29,10 @@ ShopChain là Web API xây dựng bằng ASP.NET Core 8.0 dùng để quản lý
    ```bash
    dotnet run --project ShopChain.Api
    ```
-2. Mặc định API sẽ chạy ở `https://localhost:5001` (hoặc một port tùy cấu hình). Swagger sẵn có tại `/swagger`.
+2. Mặc định API sẽ chạy ở `https://localhost:7172` (hoặc một port tùy cấu hình). Swagger sẵn có tại `/swagger`.
 
 ## Thử nghiệm với Swagger
-Sau khi chạy API, truy cập đường dẫn `https://localhost:5001/swagger` để xem tài liệu và thử gọi API trực tiếp. Swagger liệt kê ba nhóm chính:
+Sau khi chạy API, truy cập đường dẫn `https://localhost:7172/swagger` để xem tài liệu và thử gọi API trực tiếp. Swagger liệt kê ba nhóm chính:
 - **Stores** (cửa hàng)
 - **Employees** (nhân viên)
 - **Provinces** (tỉnh/thành)
