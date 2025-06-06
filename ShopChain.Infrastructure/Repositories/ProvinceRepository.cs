@@ -36,14 +36,12 @@ namespace ShopChain.Infrastructure.Repositories
 
             var entityList = provinces.Select(p => new Province
             {
-                Code = p.Code,
                 Name = p.Name,
                 CodeName = p.CodeName,
                 DivisionType = p.DivisionType,
                 PhoneCode = p.PhoneCode,
                 Districts = p.Districts.Select(d => new District
                 {
-                    Code = d.Code,
                     Name = d.Name,
                     CodeName = d.CodeName,
                     DivisionType = d.DivisionType,
@@ -51,7 +49,6 @@ namespace ShopChain.Infrastructure.Repositories
                     ProvinceCode = p.Code,
                     Wards = d.Wards.Select(w => new Ward
                     {
-                        Code = w.Code,
                         Name = w.Name,
                         CodeName = w.CodeName,
                         DivisionType = w.DivisionType,
