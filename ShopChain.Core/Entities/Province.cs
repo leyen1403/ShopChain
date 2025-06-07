@@ -9,9 +9,13 @@ namespace ShopChain.Core.Entities
     public class Province
     {
         /// <summary>
-        /// Mã tỉnh (Primary Key)
+        /// Identifier duy nhất của tỉnh/thành (Primary Key)
         /// </summary>
         [Key]
+        public int Id { get; set; }
+        /// <summary>
+        /// Mã tỉnh (Primary Key)
+        /// </summary>
         public int Code { get; set; }
 
         /// <summary>

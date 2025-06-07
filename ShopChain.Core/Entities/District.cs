@@ -8,10 +8,11 @@ namespace ShopChain.Core.Entities
     /// </summary>
     public class District
     {
+        [Key]
+        public int Id { get; set; }
         /// <summary>
         /// Mã quận/huyện (Primary Key)
         /// </summary>
-        [Key]
         public int Code { get; set; }
 
         /// <summary>

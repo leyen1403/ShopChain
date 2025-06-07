@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShopChain.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class dbinit : Migration
+    public partial class _12 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,8 +34,9 @@ namespace ShopChain.Infrastructure.Migrations
                 name: "Provinces",
                 columns: table => new
                 {
-                    Code = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     CodeName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     DivisionType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -43,7 +44,7 @@ namespace ShopChain.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Provinces", x => x.Code);
+                    table.PrimaryKey("PK_Provinces", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,57 +81,59 @@ namespace ShopChain.Infrastructure.Migrations
                 name: "Districts",
                 columns: table => new
                 {
-                    Code = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CodeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DivisionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShortCodeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProvinceCode = table.Column<int>(type: "int", nullable: false)
+                    ProvinceCode = table.Column<int>(type: "int", nullable: false),
+                    ProvinceId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Districts", x => x.Code);
+                    table.PrimaryKey("PK_Districts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Districts_Provinces_ProvinceCode",
-                        column: x => x.ProvinceCode,
+                        name: "FK_Districts_Provinces_ProvinceId",
+                        column: x => x.ProvinceId,
                         principalTable: "Provinces",
-                        principalColumn: "Code",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Wards",
                 columns: table => new
                 {
-                    Code = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CodeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DivisionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShortCodeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DistrictCode = table.Column<int>(type: "int", nullable: false)
+                    DistrictCode = table.Column<int>(type: "int", nullable: false),
+                    DistrictId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Wards", x => x.Code);
+                    table.PrimaryKey("PK_Wards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Wards_Districts_DistrictCode",
-                        column: x => x.DistrictCode,
+                        name: "FK_Wards_Districts_DistrictId",
+                        column: x => x.DistrictId,
                         principalTable: "Districts",
-                        principalColumn: "Code",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Districts_ProvinceCode",
+                name: "IX_Districts_ProvinceId",
                 table: "Districts",
-                column: "ProvinceCode");
+                column: "ProvinceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Wards_DistrictCode",
+                name: "IX_Wards_DistrictId",
                 table: "Wards",
-                column: "DistrictCode");
+                column: "DistrictId");
         }
 
         /// <inheritdoc />

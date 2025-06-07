@@ -12,8 +12,8 @@ using ShopChain.Infrastructure.Data;
 namespace ShopChain.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250606083814_db-init")]
-    partial class dbinit
+    [Migration("20250607052717_12")]
+    partial class _12
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,14 @@ namespace ShopChain.Infrastructure.Migrations
 
             modelBuilder.Entity("ShopChain.Core.Entities.District", b =>
                 {
-                    b.Property<int>("Code")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Code"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
 
                     b.Property<string>("CodeName")
                         .HasColumnType("nvarchar(max)");
@@ -45,12 +48,15 @@ namespace ShopChain.Infrastructure.Migrations
                     b.Property<int>("ProvinceCode")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProvinceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ShortCodeName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Code");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ProvinceCode");
+                    b.HasIndex("ProvinceId");
 
                     b.ToTable("Districts");
                 });
@@ -99,11 +105,14 @@ namespace ShopChain.Infrastructure.Migrations
 
             modelBuilder.Entity("ShopChain.Core.Entities.Province", b =>
                 {
-                    b.Property<int>("Code")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Code"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
 
                     b.Property<string>("CodeName")
                         .HasMaxLength(100)
@@ -120,7 +129,7 @@ namespace ShopChain.Infrastructure.Migrations
                     b.Property<int>("PhoneCode")
                         .HasColumnType("int");
 
-                    b.HasKey("Code");
+                    b.HasKey("Id");
 
                     b.ToTable("Provinces");
                 });
@@ -220,16 +229,22 @@ namespace ShopChain.Infrastructure.Migrations
 
             modelBuilder.Entity("ShopChain.Core.Entities.Ward", b =>
                 {
-                    b.Property<int>("Code")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Code"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
 
                     b.Property<string>("CodeName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DistrictCode")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DistrictId")
                         .HasColumnType("int");
 
                     b.Property<string>("DivisionType")
@@ -241,9 +256,9 @@ namespace ShopChain.Infrastructure.Migrations
                     b.Property<string>("ShortCodeName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Code");
+                    b.HasKey("Id");
 
-                    b.HasIndex("DistrictCode");
+                    b.HasIndex("DistrictId");
 
                     b.ToTable("Wards");
                 });
@@ -252,9 +267,7 @@ namespace ShopChain.Infrastructure.Migrations
                 {
                     b.HasOne("ShopChain.Core.Entities.Province", "Province")
                         .WithMany("Districts")
-                        .HasForeignKey("ProvinceCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProvinceId");
 
                     b.Navigation("Province");
                 });
@@ -263,9 +276,7 @@ namespace ShopChain.Infrastructure.Migrations
                 {
                     b.HasOne("ShopChain.Core.Entities.District", "District")
                         .WithMany("Wards")
-                        .HasForeignKey("DistrictCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DistrictId");
 
                     b.Navigation("District");
                 });

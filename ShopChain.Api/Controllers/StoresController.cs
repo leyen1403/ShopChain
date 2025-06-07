@@ -82,26 +82,5 @@ namespace ShopChain.Api.Controllers
                 ? NoContent()
                 : ErrorResponse(404, "Không tìm thấy", $"Không thể xóa cửa hàng với ID = {id}");
         }
-
-        /// <summary>
-        /// Lấy danh sách tỉnh/thành từ API ngoài
-        /// </summary>
-        [HttpGet("provinces")]
-        public async Task<IActionResult> GetProvinces()
-        {
-            var result = await _sender.Send(new GetAllProvince());
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Đồng bộ và lưu danh sách tỉnh/thành vào hệ thống
-        /// </summary>
-        [HttpPost("provinces")]
-        public async Task<IActionResult> CreateProvincesFromData()
-        {
-            var provinces = await _sender.Send(new GetAllProvince());
-            await _sender.Send(new CreateNewProvinceCommand(provinces));
-            return Ok(new { message = "Cập nhật danh sách tỉnh/thành thành công." });
-        }
     }
 }

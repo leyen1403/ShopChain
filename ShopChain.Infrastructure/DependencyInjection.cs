@@ -3,8 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShopChain.Core.Interfaces;
 using ShopChain.Infrastructure.Data;
+using ShopChain.Infrastructure.ExternalServices.VnAddressServices;
 using ShopChain.Infrastructure.Repositories;
-using ShopChain.Infrastructure.Services;
+
 
 namespace ShopChain.Infrastructure
 {
@@ -24,11 +25,12 @@ namespace ShopChain.Infrastructure
             // Đăng ký Repository
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-            services.AddScoped<IExternalVendorRepository, ExternalVendorRepository>();
+            services.AddScoped<IVnAddressApiService, VnAddressApiService>();
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
 
             // Đăng ký HttpClient cho gọi API tỉnh thành
-            services.AddHttpClient<IProvinceHttpClientService, ProvinceHttpClientService>(client =>
+            services.AddHttpClient<IVnAddressApiService, VnAddressApiService>(client =>
             {
                 var baseUrl = configuration["ExternalApis:ProvinceBaseUrl"];
                 client.BaseAddress = new Uri(baseUrl ?? "https://provinces.open-api.vn/api/");
