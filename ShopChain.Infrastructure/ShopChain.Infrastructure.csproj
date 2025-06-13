@@ -21,4 +21,8 @@
     <ProjectReference Include="..\ShopChain.Application\ShopChain.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

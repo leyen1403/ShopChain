@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShopChain.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDb : Migration
+    public partial class initDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

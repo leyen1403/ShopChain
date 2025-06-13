@@ -12,8 +12,8 @@ using ShopChain.Infrastructure.Data;
 namespace ShopChain.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250610101123_AddDb")]
-    partial class AddDb
+    [Migration("20250613050401_initDatabase")]
+    partial class initDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -65,6 +65,18 @@ namespace ShopChain.Infrastructure.Repositories
         }
 
         /// <summary>
+        /// Lấy danh sách tên các tỉnh đã lưu trong hệ thống
+        /// </summary>
+        /// <returns></returns>
+        public Task<List<string?>> GetAllProvinceNames()
+        {
+            var provinceNames = _context.Provinces
+                .Select(p => p.Name)
+                .ToListAsync();
+            return provinceNames;
+        }
+
+        /// <summary>
         /// Lấy toàn bộ tỉnh cùng các quận, phường tương ứng
         /// </summary>
         public async Task<List<Province>> GetAllProvinces()
@@ -72,6 +84,42 @@ namespace ShopChain.Infrastructure.Repositories
             return await _context.Provinces
                 .Include(p => p.Districts)
                     .ThenInclude(d => d.Wards)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Lấy danh sách tên quận/huyện theo tên tỉnh
+        /// </summary>
+        /// <param name="provinceName"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public async Task<List<string?>> GetAllDistrictByProvinceName(string provinceName)
+        {
+            if (string.IsNullOrWhiteSpace(provinceName))
+            {
+                throw new ArgumentException("Tên tỉnh không được rỗng.", nameof(provinceName));
+            }
+
+            return await _context.Districts
+                .Where(d => d.Province.Name == provinceName).Select(d => d.Name).ToListAsync();
+        }
+
+        /// <summary>
+        /// Lấy danh sách tên phường/xã theo tên quận/huyện
+        /// </summary>
+        /// <param name="districtName"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public Task<List<string?>> GetAllWardByDistrictName(string districtName)
+        {
+            if(string.IsNullOrWhiteSpace(districtName))
+            {
+                throw new ArgumentException("Tên quận/huyện không được rỗng.", nameof(districtName));
+            }
+
+            return _context.Wards
+                .Where(w => w.District.Name == districtName)
+                .Select(w => w.Name)
                 .ToListAsync();
         }
     }
