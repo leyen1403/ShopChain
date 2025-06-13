@@ -24,7 +24,6 @@ namespace ShopChain.Infrastructure
 
             // Đăng ký Repository
             services.AddScoped<IStoreRepository, StoreRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IVnAddressApiService, VnAddressApiService>();
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();

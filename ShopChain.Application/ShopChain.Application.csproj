@@ -17,4 +17,9 @@
     <ProjectReference Include="..\ShopChain.Core\ShopChain.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\EmployeeCommands\" />
+    <Folder Include="Queries\EmployeeQueries\" />
+  </ItemGroup>
+
 </Project>

@@ -24,5 +24,11 @@ namespace ShopChain.Api.Controllers
             return Ok(new { message = $"Đồng bộ thành công {count} tỉnh/thành." });
         }
 
+        [HttpGet("get-all-provinces")]
+        public async Task<IActionResult> GetAllProvinces()
+        {
+            var provinces = await _sender.Send(new GetAllProvincesQuery());
+            return Ok(provinces);
+        }
     }
 }
