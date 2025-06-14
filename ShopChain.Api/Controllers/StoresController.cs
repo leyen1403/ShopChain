@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopChain.Application.Commands;
 using ShopChain.Application.Dtos;
@@ -20,6 +21,7 @@ namespace ShopChain.Api.Controllers
         /// <summary>
         /// Lấy danh sách tất cả cửa hàng
         /// </summary>
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllStores()
         {
@@ -30,6 +32,7 @@ namespace ShopChain.Api.Controllers
         /// <summary>
         /// Lấy thông tin cửa hàng theo ID
         /// </summary>
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStoreById(int id)
         {
@@ -42,6 +45,7 @@ namespace ShopChain.Api.Controllers
         /// <summary>
         /// Tạo mới cửa hàng
         /// </summary>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateStore([FromBody] StoreDto storeDto)
         {
@@ -57,7 +61,7 @@ namespace ShopChain.Api.Controllers
 
         /// <summary>
         /// Cập nhật cửa hàng
-        /// </summary>
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateStore([FromBody] StoreDto storeDto)
         {
@@ -73,7 +77,7 @@ namespace ShopChain.Api.Controllers
 
         /// <summary>
         /// Xóa mềm cửa hàng theo ID
-        /// </summary>
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStore(int id)
         {

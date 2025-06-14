@@ -27,6 +27,7 @@ namespace ShopChain.Infrastructure
             services.AddScoped<IVnAddressApiService, VnAddressApiService>();
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<IUserClientRepository, UserClientRepository>();
 
             // Đăng ký HttpClient cho gọi API tỉnh thành
             services.AddHttpClient<IVnAddressApiService, VnAddressApiService>(client =>

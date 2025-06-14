@@ -73,7 +73,8 @@ namespace ShopChain.Infrastructure.Data
         /// <summary>Bảng ứng tuyển</summary>
         public DbSet<JobApplication> JobApplications { get; set; } = null!;
 
-
+        /// <summary> Bảng khách hàng sử dụng ứng dụng </summary>
+        public DbSet<UserClient> UserClients { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
