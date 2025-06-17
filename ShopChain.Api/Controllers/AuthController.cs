@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShopChain.Application.Dtos;
 using ShopChain.Application.Queries.UserClientQueries;
-using ShopChain.Core.Entities;
-using ShopChain.Infrastructure.Data;
 
 namespace ShopChain.Api.Controllers
 {

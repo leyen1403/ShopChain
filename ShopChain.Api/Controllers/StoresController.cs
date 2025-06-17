@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using ShopChain.Application.Commands;
 using ShopChain.Application.Dtos;
 using ShopChain.Application.Queries;
-using ShopChain.Core.Entities;
 
 namespace ShopChain.Api.Controllers
 {

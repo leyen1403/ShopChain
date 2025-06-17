@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopChain.Application.Commands;
 using ShopChain.Application.Queries;
@@ -21,6 +22,7 @@ namespace ShopChain.Api.Controllers
         /// Đông bộ dữ liệu tỉnh/thành từ API
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpPost("sync")]
         public async Task<IActionResult> Sync()
         {
@@ -32,6 +34,7 @@ namespace ShopChain.Api.Controllers
         /// Lấy danh sách tất cả tỉnh/thành đã lưu trong hệ thống (bao gồm quận/huyện, phường/xã)
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-all-provinces")]
         public async Task<IActionResult> GetAllProvinces()
         {
@@ -43,6 +46,7 @@ namespace ShopChain.Api.Controllers
         /// Lấy danh sách tên tất cả tỉnh/thành đã lưu trong hệ thống
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-all-province-names")]
         public async Task<IActionResult> GetAllProvinceNames()
         {
@@ -55,6 +59,7 @@ namespace ShopChain.Api.Controllers
         /// </summary>
         /// <param name="name">Tên tỉnh/thành phố</param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-all-district-by-province-name/{name}")]
         public async Task<IActionResult> GetAllDistrictByProvinceName(string name)
         {
@@ -67,6 +72,7 @@ namespace ShopChain.Api.Controllers
         /// </summary>
         /// <param name="name">Tên quận/huyện</param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-all-ward-by-district-name/{name}")]
         public async Task<IActionResult> GetAllWardByDistrictName(string name)
         {
