@@ -38,17 +38,5 @@ namespace ShopChain.Core.Entities
         /// <summary>Thông tin phòng ban</summary>
         public Department? Department { get; set; }
 
-        /// <summary>Các yêu cầu nghỉ phép</summary>
-        public List<LeaveRequest> LeaveRequests { get; set; } = new();
-
-        /// <summary>Bản ghi chấm công</summary>
-        public List<AttendanceRecord> AttendanceRecords { get; set; } = new();
-
-        /// <summary>Bản ghi lương</summary>
-        public List<PayrollRecord> PayrollRecords { get; set; } = new();
-
-        /// <summary>Bản đánh giá hiệu suất</summary>
-        public List<PerformanceReview> PerformanceReviews { get; set; } = new();
-
     }
 }

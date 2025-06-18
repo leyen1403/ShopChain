@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopChain.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using ShopChain.Infrastructure.Data;
 namespace ShopChain.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250618014831_update-database")]
+    partial class updatedatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,93 +137,6 @@ namespace ShopChain.Infrastructure.Migrations
                     b.HasIndex("DepartmentID");
 
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("ShopChain.Core.Entities.Product", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DiscountType")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("DiscountValue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPointAccumulateEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPointRedeemEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("OriginalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("PointAccumulateRate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductGroupID")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("SellPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("TaxRate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("TaxType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProductGroupID");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("ShopChain.Core.Entities.ProductGroup", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("GroupCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GroupName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("ProductGroups");
                 });
 
             modelBuilder.Entity("ShopChain.Core.Entities.Province", b =>
@@ -443,17 +359,6 @@ namespace ShopChain.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("ShopChain.Core.Entities.Product", b =>
-                {
-                    b.HasOne("ShopChain.Core.Entities.ProductGroup", "ProductGroup")
-                        .WithMany()
-                        .HasForeignKey("ProductGroupID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductGroup");
                 });
 
             modelBuilder.Entity("ShopChain.Core.Entities.Ward", b =>
