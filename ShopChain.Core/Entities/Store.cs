@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ShopChain.Core.Entities
 {
@@ -117,5 +116,10 @@ namespace ShopChain.Core.Entities
         /// </summary>
         [MaxLength(50)]
         public string UpdatedBy { get; set; } = null!;
+
+        public ICollection<Inventory> inventories { get; set; } = new List<Inventory>();
+        public ICollection<StockReceipt> stockReceipts { get; set; } = new List<StockReceipt>();
+        public ICollection<StockReturnDetail> stockReturnDetails { get; set; } = new List<StockReturnDetail>();
+        public ICollection<StockReturn> stockReturns { get; set; } = new List<StockReturn>();
     }
 }

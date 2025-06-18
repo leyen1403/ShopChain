@@ -20,6 +20,8 @@
 
         public string Name { get; set; } = string.Empty!;
 
+        public string? Url { get; set; } = string.Empty!;
+
         public decimal? SellPrice { get; set; } = 0;
 
         public decimal? OriginalPrice { get; set; } = 0;
@@ -49,6 +51,10 @@
         public DateTime? UpdateAt { get; set; } = null;
 
         public ProductGroup? ProductGroup { get; set; }
+
+        public ICollection<Inventory> inventories { get; set; } = new List<Inventory>();
+        public ICollection<StockReceiptDetail> StockReceiptDetails { get; set; } = new List<StockReceiptDetail>();
+        public ICollection<StockReturnDetail> StockReturnDetails { get; set; } = new List<StockReturnDetail>();
 
         /// <summary>
         /// Tính giá bán sau khi áp dụng giảm giá (nếu có).

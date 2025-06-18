@@ -10,9 +10,7 @@ namespace ShopChain.Infrastructure.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        // ===== Quản lý cửa hàng =====
         /// <summary>Bảng cửa hàng</summary>
-        // ===== Địa lý =====
         public DbSet<Store> Stores { get; set; } = null!;
 
         /// <summary>Bảng tỉnh/thành</summary>
@@ -23,8 +21,6 @@ namespace ShopChain.Infrastructure.Data
 
         /// <summary>Bảng phường/xã</summary>
         public DbSet<Ward> Wards { get; set; } = null!;
-
-        // ===== Nhân sự =====
 
         /// <summary>Bảng nhân viên</summary>
         public DbSet<Employee> Employees { get; set; } = null!;
@@ -40,6 +36,18 @@ namespace ShopChain.Infrastructure.Data
 
         /// <summary> Bảng sản phẩm </summary>
         public DbSet<Product> Products { get; set; } = null!;
+
+        /// <summary>Bảng tồn kho</summary>
+        public DbSet<Inventory> Inventories { get; set; } = null!;
+
+        /// <summary>Bảng nhà cung cấp</summary>
+        public DbSet<Supplier> Suppliers { get; set; } = null!;
+
+        /// <summary>Bảng phiếu nhập hàng</summary>
+        public DbSet<StockReceipt> StockReceipts { get; set; } = null!;
+
+        /// <summary>Bảng chi tiết phiếu nhập hàng</summary>
+        public DbSet<StockReceiptDetail> StockReceiptDetails { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,25 +65,6 @@ namespace ShopChain.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(d => d.ManagerID)
                 .OnDelete(DeleteBehavior.SetNull); // Nếu manager bị xóa thì set null           
-        }
-
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            var entries = ChangeTracker
-                .Entries<AuditableEntity>()
-                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
-
-            foreach (var entry in entries)
-            {
-                if (entry.State == EntityState.Added)
-                {
-                    entry.Entity.CreatedAt = DateTime.UtcNow;
-                }
-
-                entry.Entity.UpdatedAt = DateTime.UtcNow;
-            }
-
-            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }
