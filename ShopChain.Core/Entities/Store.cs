@@ -121,5 +121,7 @@ namespace ShopChain.Core.Entities
         public ICollection<StockReceipt> stockReceipts { get; set; } = new List<StockReceipt>();
         public ICollection<StockReturnDetail> stockReturnDetails { get; set; } = new List<StockReturnDetail>();
         public ICollection<StockReturn> stockReturns { get; set; } = new List<StockReturn>();
+        public ICollection<StockTransfer> stockTransfers { get; set; } = new List<StockTransfer>();
+        public ICollection<InventoryStocktake> inventoryStocktakes { get; set; } = new List<InventoryStocktake>();
     }
 }

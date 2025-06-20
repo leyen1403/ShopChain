@@ -55,6 +55,8 @@
         public ICollection<Inventory> inventories { get; set; } = new List<Inventory>();
         public ICollection<StockReceiptDetail> StockReceiptDetails { get; set; } = new List<StockReceiptDetail>();
         public ICollection<StockReturnDetail> StockReturnDetails { get; set; } = new List<StockReturnDetail>();
+        public ICollection<StockTransferDetail> stockTransferDetails { get; set; } = new List<StockTransferDetail>();
+        public ICollection<InventoryStocktakeDetail> inventoryStocktakeDetails { get; set; } = new List<InventoryStocktakeDetail>();
 
         /// <summary>
         /// Tính giá bán sau khi áp dụng giảm giá (nếu có).

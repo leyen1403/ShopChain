@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopChain.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using ShopChain.Infrastructure.Data;
 namespace ShopChain.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250619110424_add-table-StockTransfer")]
+    partial class addtableStockTransfer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,78 +166,6 @@ namespace ShopChain.Infrastructure.Migrations
                     b.HasIndex("StoreID");
 
                     b.ToTable("Inventories");
-                });
-
-            modelBuilder.Entity("ShopChain.Core.Entities.InventoryStocktake", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<DateTime?>("ConfirmedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ConfirmedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PerformedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StocktakeDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("StocktakeNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StoreID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("StoreID");
-
-                    b.ToTable("InventoryStocktakes");
-                });
-
-            modelBuilder.Entity("ShopChain.Core.Entities.InventoryStocktakeDetail", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<decimal>("ActualQuantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StocktakeID")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("SystemQuantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProductID");
-
-                    b.HasIndex("StocktakeID");
-
-                    b.ToTable("InventoryStocktakeDetails");
                 });
 
             modelBuilder.Entity("ShopChain.Core.Entities.Product", b =>
@@ -819,36 +750,6 @@ namespace ShopChain.Infrastructure.Migrations
                     b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("ShopChain.Core.Entities.InventoryStocktake", b =>
-                {
-                    b.HasOne("ShopChain.Core.Entities.Store", "Store")
-                        .WithMany("inventoryStocktakes")
-                        .HasForeignKey("StoreID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Store");
-                });
-
-            modelBuilder.Entity("ShopChain.Core.Entities.InventoryStocktakeDetail", b =>
-                {
-                    b.HasOne("ShopChain.Core.Entities.Product", "Product")
-                        .WithMany("inventoryStocktakeDetails")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShopChain.Core.Entities.InventoryStocktake", "Stocktake")
-                        .WithMany("Details")
-                        .HasForeignKey("StocktakeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Stocktake");
-                });
-
             modelBuilder.Entity("ShopChain.Core.Entities.Product", b =>
                 {
                     b.HasOne("ShopChain.Core.Entities.ProductGroup", "ProductGroup")
@@ -1003,11 +904,6 @@ namespace ShopChain.Infrastructure.Migrations
                     b.Navigation("Wards");
                 });
 
-            modelBuilder.Entity("ShopChain.Core.Entities.InventoryStocktake", b =>
-                {
-                    b.Navigation("Details");
-                });
-
             modelBuilder.Entity("ShopChain.Core.Entities.Product", b =>
                 {
                     b.Navigation("StockReceiptDetails");
@@ -1015,8 +911,6 @@ namespace ShopChain.Infrastructure.Migrations
                     b.Navigation("StockReturnDetails");
 
                     b.Navigation("inventories");
-
-                    b.Navigation("inventoryStocktakeDetails");
 
                     b.Navigation("stockTransferDetails");
                 });
@@ -1044,8 +938,6 @@ namespace ShopChain.Infrastructure.Migrations
             modelBuilder.Entity("ShopChain.Core.Entities.Store", b =>
                 {
                     b.Navigation("inventories");
-
-                    b.Navigation("inventoryStocktakes");
 
                     b.Navigation("stockReceipts");
 
