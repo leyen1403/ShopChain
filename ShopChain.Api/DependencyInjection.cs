@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using ShopChain.Application;
 using ShopChain.Core;
 using ShopChain.Infrastructure;
+using System.Security.Claims;
 using System.Text;
 
 namespace ShopChain.Api
@@ -26,6 +27,7 @@ namespace ShopChain.Api
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
+                        RoleClaimType = ClaimTypes.Role,
 
                         ValidIssuer = jwtConfig["Issuer"],
                         ValidAudience = jwtConfig["Audience"],

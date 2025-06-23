@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopChain.Application.Commands.UserClientCommands;
 
-namespace ShopChain.Api.Controllers
+namespace ShopChain.Api.Controllers.Admin
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -44,7 +44,7 @@ namespace ShopChain.Api.Controllers
             var result = await _mediator.Send(command, cancellationToken);
 
             if (!result.IsSuccess)
-                return BadRequest(new { Error = result.Error });
+                return BadRequest(new { result.Error });
 
             return Ok(result.Value);
         }
