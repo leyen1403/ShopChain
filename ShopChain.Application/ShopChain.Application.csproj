@@ -8,9 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\EmployeeCommands\" />
-    <Folder Include="Queries\EmployeeQueries\" />
+    <Folder Include="Mappings\" />
+    <Folder Include="Queries\" />
   </ItemGroup>
 
 </Project>

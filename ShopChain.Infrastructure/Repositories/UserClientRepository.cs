@@ -1,57 +1,52 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+using ShopChain.Application.Commons;
 using ShopChain.Core.Entities;
 using ShopChain.Core.Interfaces;
 using ShopChain.Infrastructure.Data;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using ShopChain.Infrastructure.Security;
 
 namespace ShopChain.Infrastructure.Repositories
 {
     public class UserClientRepository : IUserClientRepository
     {
         private readonly AppDbContext _context;
-        private readonly IConfiguration _config;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public UserClientRepository(AppDbContext context, IConfiguration configuration)
+        public UserClientRepository(AppDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _config = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _passwordHasher = new Sha256PasswordHasher(); 
         }
 
-        public async Task<(bool IsSuccessful, UserClient? User)> Login(string username, string password)
+        public async Task<UserClient?> AuthenticateAsync(string username, string password, CancellationToken cancellationToken = default)
         {
-            var user = await _context.UserClients.FirstOrDefaultAsync(u => u.Username == username && u.PasswordHash == password);
-            if (user != null)
+            var userClient = await _context.UserClients
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Username == username, cancellationToken);
+            if (userClient == null)
             {
-                return (true, user); // Login successful
+                return null;                
+            }   
+
+            if (!_passwordHasher.VerifyPassword(password, userClient.PasswordHash))
+            {
+                return null;
             }
-            return (false, null); // Login failed
+
+            return userClient;
         }
 
-        public async Task<string> CreateToken(UserClient user)
+        public async Task<UserClient?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
         {
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role ?? "User")
-            };
+            return await _context.UserClients
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Username == username, cancellationToken);
+        }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(2),
-                signingCredentials: creds
-            );
-
-            return await Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
+        public async Task<UserClient> RegisterAsync(UserClient userClient, CancellationToken cancellationToken = default)
+        {
+            _context.UserClients.Add(userClient);
+            return await _context.SaveChangesAsync(cancellationToken) > 0 ? userClient : null!;
         }
     }
 }

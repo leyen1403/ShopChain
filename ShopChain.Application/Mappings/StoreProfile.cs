@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using ShopChain.Application.Dtos;
 using ShopChain.Core.Entities;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ShopChain.Application.Mappings
 {
@@ -12,7 +11,7 @@ namespace ShopChain.Application.Mappings
     {
         public StoreProfile()
         {
-            CreateMap<Store, StoreDto>().ReverseMap();
+            CreateMap<UserClient, UserClientDto>().ReverseMap();
         }
     }
 }

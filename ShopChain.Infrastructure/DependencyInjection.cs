@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ShopChain.Application.Commons;
 using ShopChain.Core.Interfaces;
 using ShopChain.Infrastructure.Data;
-using ShopChain.Infrastructure.ExternalServices.VnAddressServices;
 using ShopChain.Infrastructure.Repositories;
+using ShopChain.Infrastructure.Security;
 
 
 namespace ShopChain.Infrastructure
@@ -23,18 +24,11 @@ namespace ShopChain.Infrastructure
             });
 
             // Đăng ký Repository
-            services.AddScoped<IStoreRepository, StoreRepository>();
-            services.AddScoped<IVnAddressApiService, VnAddressApiService>();
-            services.AddScoped<IProvinceRepository, ProvinceRepository>();
-            services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<IPasswordHasher, Sha256PasswordHasher>();
+
             services.AddScoped<IUserClientRepository, UserClientRepository>();
 
-            // Đăng ký HttpClient cho gọi API tỉnh thành
-            services.AddHttpClient<IVnAddressApiService, VnAddressApiService>(client =>
-            {
-                var baseUrl = configuration["ExternalApis:ProvinceBaseUrl"];
-                client.BaseAddress = new Uri(baseUrl ?? "https://provinces.open-api.vn/api/");
-            });
+            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
             return services;
         }
