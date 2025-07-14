@@ -1,6 +1,7 @@
 ﻿using ShopChain.Application.Commons;
 using System.Security.Cryptography;
 using System.Text;
+using BCrypt.Net;
 
 namespace ShopChain.Infrastructure.Security
 {
@@ -12,14 +13,22 @@ namespace ShopChain.Infrastructure.Security
             {
                 var bytes = Encoding.UTF8.GetBytes(password);
                 var hash = sha256.ComputeHash(bytes);
-                return Convert.ToBase64String(hash);
+                var shaHash = Convert.ToBase64String(hash);
+
+                return BCrypt.Net.BCrypt.HashPassword(shaHash);
             }
         }
 
         public bool VerifyPassword(string password, string passwordHash)
         {
-            var hashOfInput = HashPassword(password);
-            return hashOfInput == passwordHash;
+            using(var sha256 = SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(password);
+                var hash = sha256.ComputeHash(bytes);
+                var shaHash = Convert.ToBase64String(hash);
+
+                return BCrypt.Net.BCrypt.Verify(shaHash, passwordHash);
+            }
         }
     }
 }
