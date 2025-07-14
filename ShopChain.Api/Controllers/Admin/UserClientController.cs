@@ -18,7 +18,7 @@ namespace ShopChain.Api.Controllers.Admin
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [Authorize]
+        
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserClientRequest request, CancellationToken cancellationToken)
         {
@@ -73,6 +73,7 @@ namespace ShopChain.Api.Controllers.Admin
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserClientRequest request, CancellationToken cancellationToken)
         {
+            //Lethanhyen123@
             // Kiểm tra request cơ bản
             if (request == null)
             {
